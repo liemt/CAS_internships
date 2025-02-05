@@ -42,27 +42,6 @@
         });
       });
     });
-    document.addEventListener("DOMContentLoaded", function () {
-      const filterInput = document.getElementById("fieldFilter");
-      const table = document.querySelector(".internships-table");
-      const tbody = table.querySelector("tbody");
-
-      filterInput.addEventListener("keyup", function () {
-        const filterValue = filterInput.value.toLowerCase();
-        // Get all rows in the tbody
-        const rows = tbody.querySelectorAll("tr");
-
-        rows.forEach(row => {
-          // The Field/Discipline cell is the third cell (index 2)
-          const fieldCell = row.children[2];
-          if (fieldCell) {
-            const cellText = fieldCell.textContent.toLowerCase();
-            // Display the row if the cell text includes the filter value; otherwise, hide it
-            row.style.display = cellText.includes(filterValue) ? "" : "none";
-          }
-        });
-      });
-    });
   </script>
 </head>
 
@@ -172,9 +151,7 @@
               <div class="entry-content reg">
                 <p>Below is a list of organizations offering internship opportunities. Click on the organization name to
                   view more details.</p>
-                <!-- Filter Input -->
-                <label for="fieldFilter">Filter by Field/Discipline:</label>
-                <input type="text" id="fieldFilter" placeholder="Enter keyword...">
+
                 <table class="internships-table" border="1" cellpadding="5" cellspacing="0">
                   <thead>
                     <tr>
