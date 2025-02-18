@@ -42,7 +42,61 @@
         });
       });
     });
+    document.addEventListener("DOMContentLoaded", function () {
+      const filterInput = document.getElementById("fieldFilter");
+      const table = document.querySelector(".internships-table");
+      const tbody = table.querySelector("tbody");
+
+      filterInput.addEventListener("keyup", function () {
+        const filterValue = filterInput.value.toLowerCase();
+        // Get all rows in the tbody
+        const rows = tbody.querySelectorAll("tr");
+
+        rows.forEach(row => {
+          // The Field/Discipline cell is the third cell (index 2)
+          const fieldCell = row.children[2];
+          if (fieldCell) {
+            const cellText = fieldCell.textContent.toLowerCase();
+            // Display the row if the cell text includes the filter value; otherwise, hide it
+            row.style.display = cellText.includes(filterValue) ? "" : "none";
+          }
+        });
+      });
+    });
   </script>
+  <style>
+    /* Style for the container that wraps the table */
+    .table-container {
+      max-height: 400px;
+      /* Set the maximum height for the container */
+      overflow-y: auto;
+      /* Enable vertical scrolling */
+      overflow-x: auto;
+      /* Optional: enable horizontal scrolling if needed */
+      border: 1px solid #ddd;
+      /* Optional: add a border around the container */
+      margin-top: 10px;
+      /* Optional: add some spacing above the container */
+    }
+
+    /* Optional table styles for better presentation */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #ccc;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
 </head>
 
 <body class="home page-template-default page page-id-8  rock dropnav standard">
@@ -151,43 +205,152 @@
               <div class="entry-content reg">
                 <p>Below is a list of organizations offering internship opportunities. Click on the organization name to
                   view more details.</p>
-
-                <table class="internships-table" border="1" cellpadding="5" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Organization Name</th>
-                      <th>Internship Types</th>
-                      <th>Field/Discipline</th>
-                      <th>Details</th>
-                      <th>Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Rows for 20 organizations -->
-                    <tr>
-                      <td><a href="organizations/org1.html">Organization 1</a></td>
-                      <td>Type A</td>
-                      <td>Field A</td>
-                      <td><a href="organizations/org1.html">View Page</a></td>
-                      <td>Note 1</td>
-                    </tr>
-                    <tr>
-                      <td><a href="organizations/org2.html">Organization 2</a></td>
-                      <td>Type B</td>
-                      <td>Field B</td>
-                      <td><a href="organizations/org2.html">View Page</a></td>
-                      <td>Note 2</td>
-                    </tr>
-                    <!-- Repeat for 18 more organizations -->
-                    <tr>
-                      <td><a href="organizations/org20.html">Organization 20</a></td>
-                      <td>Type T</td>
-                      <td>Field T</td>
-                      <td><a href="organizations/org20.html">View Page</a></td>
-                      <td>Note 20</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <!-- Filter Input -->
+                <label for="fieldFilter">Filter by Field/Discipline:</label>
+                <input type="text" id="fieldFilter" placeholder="Enter keyword...">
+                <div class="table-container">
+                  <table class="internships-table">
+                    <thead>
+                      <tr>
+                        <th>Organization Name</th>
+                        <th>Internship Types</th>
+                        <th>Field/Discipline</th>
+                        <th>Details</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Rows for 20 organizations -->
+                      <tr>
+                        <td><a href="organizations/org1.html">Organization 1</a></td>
+                        <td>Type A</td>
+                        <td>Field A</td>
+                        <td><a href="organizations/org1.html">View Page</a></td>
+                        <td>Note 1</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <!-- Repeat for 18 more organizations -->
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org2.html">Organization 2</a></td>
+                        <td>Type B</td>
+                        <td>Field B</td>
+                        <td><a href="organizations/org2.html">View Page</a></td>
+                        <td>Note 2</td>
+                      </tr>
+                      <tr>
+                        <td><a href="organizations/org20.html">Organization 20</a></td>
+                        <td>Type T</td>
+                        <td>Field T</td>
+                        <td><a href="organizations/org20.html">View Page</a></td>
+                        <td>Note 20</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div><!-- .entry-content -->
             </article><!-- #post -->
 
