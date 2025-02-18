@@ -65,36 +65,41 @@
     });
 
     async function loadTableFromExcel() {
-      const response = await fetch('organizations_grandlist.xlsx');
-      const data = await response.arrayBuffer();
-      const workbook = new ExcelJS.Workbook();
-      await workbook.xlsx.load(data);
-      const sheet = workbook.worksheets[0];
+      try {
+        const response = await fetch('organizations_grandlist.xlsx');
+        const data = await response.arrayBuffer();
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(data);
+        const sheet = workbook.worksheets[0];
 
-      const tbody = document.querySelector(".internships-table tbody");
-      tbody.innerHTML = "";
-      let count = 0;
+        const tbody = document.querySelector(".internships-table tbody");
+        tbody.innerHTML = "";
+        let count = 0;
 
-      sheet.eachRow((row, rowIndex) => {
-        if (rowIndex === 1 || count >= 20) return; // Skip header row and limit to 20 records
-        const orgName = row.getCell(1).value;
-        const internshipType = row.getCell(2).value;
-        const field = row.getCell(3).value;
-        const detailsText = row.getCell(4).value;
-        const notes = row.getCell(5).value;
-        const url = row.getCell(6).value;
+        for (let i = 2; i <= Math.min(sheet.rowCount, 21); i++) { // Start from row 2 to skip headers
+          const row = sheet.getRow(i);
+          const orgName = row.getCell(1).value;
+          const internshipType = row.getCell(2).value;
+          const field = row.getCell(3).value;
+          const detailsText = row.getCell(4).value;
+          const notes = row.getCell(5).value;
+          const url = row.getCell(6).value;
 
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><a href="${url}">${orgName}</a></td>
-          <td>${internshipType}</td>
-          <td>${field}</td>
-          <td><a href="${url}">${detailsText}</a></td>
-          <td>${notes}</td>
-        `;
-        tbody.appendChild(tr);
-        count++;
-      });
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><a href="${url}">${orgName}</a></td>
+            <td>${internshipType}</td>
+            <td>${field}</td>
+            <td><a href="${url}">${detailsText}</a></td>
+            <td>${notes}</td>
+          `;
+          tbody.appendChild(tr);
+          count++;
+        }
+      } catch (error) {
+        console.error("Error loading Excel file:", error);
+        document.querySelector(".internships-table tbody").innerHTML = "<tr><td colspan='5'>Failed to load data.</td></tr>";
+      }
     }
     document.addEventListener("DOMContentLoaded", loadTableFromExcel);
 
