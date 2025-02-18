@@ -30,12 +30,13 @@
             }
 
             try {
-                const response = await fetch(`organizations/${orgFile}.txt`);
+                const response = await fetch(`organizations/${orgFile}.rtf`);
                 if (!response.ok) {
                     throw new Error("File not found");
                 }
                 const text = await response.text();
-                document.getElementById("content").innerText = text;
+                const rtfHtml = text.replace(/\\par/g, "<br>").replace(/\\'([0-9a-f]{2})/gi, (match, hex) => String.fromCharCode(parseInt(hex, 16)));
+                document.getElementById("content").innerHTML = rtfHtml;
             } catch (error) {
                 console.error("Error loading organization data:", error);
                 document.getElementById("content").innerText = "Error: Unable to load organization details.";
