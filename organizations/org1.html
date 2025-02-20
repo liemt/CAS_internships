@@ -29,7 +29,7 @@
                 return;
             }
 
-            const filePath = `${orgFile.replace('.txt', '')}.txt`;
+            const filePath = `${orgFile.endsWith('.txt') ? orgFile : orgFile + '.txt'}`;
             console.log("Fetching file:", filePath); // Debugging info
 
             try {
