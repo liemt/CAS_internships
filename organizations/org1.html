@@ -20,6 +20,36 @@
     <link rel='dns-prefetch' href='//images.utk.edu' />
     <link rel='stylesheet' id='utthehill-style-css' href='//images.utk.edu/styles/thehill/v2015.20191009.css'
         type='text/css' media='all' />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        h2 {
+            color: #0056b3;
+            margin-top: 20px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+    </style>
     <script>
         async function loadOrganizationData() {
             const params = new URLSearchParams(window.location.search);
@@ -51,16 +81,18 @@
         }
 
         function formatText(text) {
-            // Convert text to paragraphs
-            let formattedText = text
-                .split("\n\n") // Detect paragraphs
-                .map(paragraph => {
-                    if (paragraph.match(/^(About|Internship|How to Apply)/i)) {
-                        return `<h2>${paragraph}</h2>`; // Convert detected sections to headings
-                    }
-                    return `<p>${paragraph}</p>`;
-                })
-                .join("\n");
+            let lines = text.split("\n").map(line => line.trim()).filter(line => line.length > 0);
+            let formattedText = "";
+
+            lines.forEach((line, index) => {
+                if (index === 0) {
+                    formattedText += `<h1>${line}</h1>`; // First line is the organization name
+                } else if (line.match(/^(About|Internship Details|How to Apply)/i)) {
+                    formattedText += `<h2>${line}</h2>`; // Convert section titles to h2
+                } else {
+                    formattedText += `<p>${line}</p>`; // Everything else is a paragraph
+                }
+            });
 
             return formattedText;
         }
