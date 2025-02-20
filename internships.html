@@ -75,14 +75,15 @@
 
         for (let i = 1; i <= Math.min(rows.length - 1, 20); i++) { // Skip header row, limit to 20
           const [orgName, internshipType, field, detailsText, notes, url, textfile] = rows[i];
-          const orgParam = textfile.replace(".rtf", "");
+          if (!textfile) continue; // Ensure the textfile column exists
+          const orgParam = textfile.trim().replace(".rtf", "");
 
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td><a href="${url}?org=${orgParam}">${orgName}</a></td>
+            <td><a href="organizations/org1.html?org=${orgParam}">${orgName}</a></td>
             <td>${internshipType}</td>
             <td>${field}</td>
-            <td><a href="${url}?org=${orgParam}">${detailsText}</a></td>
+            <td><a href="organizations/org1.html?org=${orgParam}">${detailsText}</a></td>
             <td>${notes}</td>
           `;
           tbody.appendChild(tr);
