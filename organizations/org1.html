@@ -21,28 +21,36 @@
     <link rel='stylesheet' id='utthehill-style-css' href='//images.utk.edu/styles/thehill/v2015.20191009.css'
         type='text/css' media='all' />
     <script>
-        async function loadOrganizationData() {
-            const params = new URLSearchParams(window.location.search);
-            const orgFile = params.get("org");
-            if (!orgFile) {
-                document.getElementById("content").innerText = "Error: No organization specified.";
-                return;
-            }
-
+        async function loadTableFromCSV() {
             try {
-                const response = await fetch(`organizations/${orgFile}.rtf`);
-                if (!response.ok) {
-                    throw new Error("File not found");
+                const response = await fetch('organizations_grandlist.csv');
+                const data = await response.text();
+                const rows = data.split("\n").map(row => row.split(","));
+
+                const tbody = document.querySelector(".internships-table tbody");
+                tbody.innerHTML = "";
+
+                for (let i = 1; i <= Math.min(rows.length - 1, 20); i++) { // Skip header row, limit to 20
+                    const [orgName, internshipType, field, detailsText, notes, url, textfile] = rows[i];
+                    if (!textfile) continue; // Ensure the textfile column exists
+                    const orgParam = textfile.trim().replace(".rtf", "");
+
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+            <td><a href="org1.html?org=${orgParam}">${orgName}</a></td>
+            <td>${internshipType}</td>
+            <td>${field}</td>
+            <td><a href="org1.html?org=${orgParam}">${detailsText}</a></td>
+            <td>${notes}</td>
+          `;
+                    tbody.appendChild(tr);
                 }
-                const text = await response.text();
-                const rtfHtml = text.replace(/\\par/g, "<br>").replace(/\\'([0-9a-f]{2})/gi, (match, hex) => String.fromCharCode(parseInt(hex, 16)));
-                document.getElementById("content").innerHTML = rtfHtml;
             } catch (error) {
-                console.error("Error loading organization data:", error);
-                document.getElementById("content").innerText = "Error: Unable to load organization details.";
+                console.error("Error loading CSV file:", error);
+                document.querySelector(".internships-table tbody").innerHTML = "<tr><td colspan='5'>Failed to load data.</td></tr>";
             }
         }
-        document.addEventListener("DOMContentLoaded", loadOrganizationData);
+        document.addEventListener("DOMContentLoaded", loadTableFromCSV);
     </script>
 </head>
 
