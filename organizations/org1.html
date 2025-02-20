@@ -29,7 +29,7 @@
                 return;
             }
 
-            const filePath = `${orgFile}.rtf`;
+            const filePath = `${orgFile}.txt`;
             console.log("Fetching file:", filePath); // Debugging info
 
             try {
@@ -37,23 +37,13 @@
                 if (!response.ok) {
                     throw new Error(`File not found: ${filePath}`);
                 }
-                const rtfText = await response.text();
+                const textContent = await response.text();
                 console.log("File loaded successfully"); // Debugging info
-                const rtfHtml = extractPlainTextFromRTF(rtfText);
-                document.getElementById("content").innerHTML = rtfHtml;
+                document.getElementById("content").innerText = textContent;
             } catch (error) {
                 console.error("Error loading organization data:", error);
                 document.getElementById("content").innerText = `Error: Unable to load organization details.\n(${error.message})`;
             }
-        }
-
-        function extractPlainTextFromRTF(rtf) {
-            // Remove RTF metadata and extract readable text
-            return rtf.replace(/\{\\rtf1[^}]+}/g, "") // Remove RTF header
-                .replace(/\\par/g, "<br>")  // Convert paragraph breaks
-                .replace(/\\'([0-9a-f]{2})/gi, (match, hex) => String.fromCharCode(parseInt(hex, 16)))
-                .replace(/\{[^}]+}/g, "") // Remove remaining RTF control words
-                .replace(/\\[a-zA-Z]+[0-9-]*\b/g, ""); // Remove unknown RTF commands
         }
 
         document.addEventListener("DOMContentLoaded", loadOrganizationData);
