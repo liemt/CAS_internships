@@ -37,13 +37,32 @@
                 if (!response.ok) {
                     throw new Error(`File not found: ${filePath}`);
                 }
-                const textContent = await response.text();
+                let textContent = await response.text();
                 console.log("File loaded successfully"); // Debugging info
-                document.getElementById("content").innerText = textContent;
+
+                // Format text content
+                textContent = formatText(textContent);
+
+                document.getElementById("content").innerHTML = textContent;
             } catch (error) {
                 console.error("Error loading organization data:", error);
                 document.getElementById("content").innerText = `Error: Unable to load organization details.\n(${error.message})`;
             }
+        }
+
+        function formatText(text) {
+            // Convert text to paragraphs
+            let formattedText = text
+                .split("\n\n") // Detect paragraphs
+                .map(paragraph => {
+                    if (paragraph.match(/^(About|Internship|How to Apply)/i)) {
+                        return `<h2>${paragraph}</h2>`; // Convert detected sections to headings
+                    }
+                    return `<p>${paragraph}</p>`;
+                })
+                .join("\n");
+
+            return formattedText;
         }
 
         document.addEventListener("DOMContentLoaded", loadOrganizationData);
