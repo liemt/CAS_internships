@@ -90,6 +90,7 @@
             let lines = text.split("\n").map(line => line.trim()).filter(line => line.length > 0);
             let formattedText = "";
             let contactInfo = "";
+            let websiteInfo = "";
             
             lines.forEach((line, index) => {
                 if (index === 0) {
@@ -97,17 +98,26 @@
                 } else if (line.match(/^(About|Internship Details|How to Apply)/i)) {
                     formattedText += `<h2>${line}</h2>`;
                 } else if (line.startsWith("Website:")) {
-                    formattedText += `<p><strong>Website:</strong> <a href="${line.replace("Website: ", "").trim()}" target="_blank">${line.replace("Website: ", "").trim()}</a></p>`;
+                    let website = line.replace("Website: ", "").trim();
+                    websiteInfo = `<p><strong>Website:</strong> <a href="${website}" target="_blank">${website}</a></p>`;
                 } else if (line.startsWith("Contact Information")) {
                     contactInfo += `<h2>${line}</h2>`;
-                } else if (line.match(/^Name:|Email:|Tel:/)) {
-                    let formattedLine = line.replace("Email:", "Email: <a href='mailto:").replace("Tel:", "Tel: <a href='tel:") + "</a>";
-                    contactInfo += `<p>${formattedLine}</p>`;
+                } else if (line.startsWith("Name:")) {
+                    contactInfo += `<p><strong>${line}</strong></p>`;
+                } else if (line.startsWith("Email:")) {
+                    let email = line.replace("Email: ", "").trim();
+                    contactInfo += `<p><strong>Email:</strong> <a href='mailto:${email}'>${email}</a></p>`;
+                } else if (line.startsWith("Tel:")) {
+                    let phone = line.replace("Tel: ", "").trim();
+                    contactInfo += `<p><strong>Phone:</strong> <a href='tel:${phone}'>${phone}</a></p>`;
                 } else {
                     formattedText += `<p>${line}</p>`;
                 }
             });
             
+            if (websiteInfo) {
+                formattedText += websiteInfo;
+            }
             if (contactInfo) {
                 formattedText += `<div class='contact-info'>${contactInfo}</div>`;
             }
