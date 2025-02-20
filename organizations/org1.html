@@ -49,6 +49,13 @@
         p {
             line-height: 1.6;
         }
+
+        .contact-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #eef5ff;
+            border-left: 5px solid #0056b3;
+        }
     </style>
     <script>
         async function loadOrganizationData() {
@@ -58,45 +65,56 @@
                 document.getElementById("content").innerText = "Error: No organization specified.";
                 return;
             }
-
+            
             const filePath = `${orgFile.endsWith('.txt') ? orgFile : orgFile + '.txt'}`;
-            console.log("Fetching file:", filePath); // Debugging info
-
+            console.log("Fetching file:", filePath);
+            
             try {
                 const response = await fetch(filePath);
                 if (!response.ok) {
                     throw new Error(`File not found: ${filePath}`);
                 }
                 let textContent = await response.text();
-                console.log("File loaded successfully"); // Debugging info
-
-                // Format text content
+                console.log("File loaded successfully");
+                
                 textContent = formatText(textContent);
-
+                
                 document.getElementById("content").innerHTML = textContent;
             } catch (error) {
                 console.error("Error loading organization data:", error);
                 document.getElementById("content").innerText = `Error: Unable to load organization details.\n(${error.message})`;
             }
         }
-
+        
         function formatText(text) {
             let lines = text.split("\n").map(line => line.trim()).filter(line => line.length > 0);
             let formattedText = "";
-
+            let contactInfo = "";
+            
             lines.forEach((line, index) => {
                 if (index === 0) {
-                    formattedText += `<h1>${line}</h1>`; // First line is the organization name
+                    formattedText += `<h1>${line}</h1>`;
                 } else if (line.match(/^(About|Internship Details|How to Apply)/i)) {
-                    formattedText += `<h2>${line}</h2>`; // Convert section titles to h2
+                    formattedText += `<h2>${line}</h2>`;
+                } else if (line.startsWith("Website:")) {
+                    formattedText += `<p><strong>Website:</strong> <a href="${line.replace("Website: ", "").trim()}" target="_blank">${line.replace("Website: ", "").trim()}</a></p>`;
+                } else if (line.startsWith("Contact Information")) {
+                    contactInfo += `<h2>${line}</h2>`;
+                } else if (line.match(/^Name:|Email:|Tel:/)) {
+                    let formattedLine = line.replace("Email:", "Email: <a href='mailto:").replace("Tel:", "Tel: <a href='tel:") + "</a>";
+                    contactInfo += `<p>${formattedLine}</p>`;
                 } else {
-                    formattedText += `<p>${line}</p>`; // Everything else is a paragraph
+                    formattedText += `<p>${line}</p>`;
                 }
             });
-
+            
+            if (contactInfo) {
+                formattedText += `<div class='contact-info'>${contactInfo}</div>`;
+            }
+            
             return formattedText;
         }
-
+        
         document.addEventListener("DOMContentLoaded", loadOrganizationData);
     </script>
     </script>
